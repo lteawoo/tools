@@ -11,7 +11,7 @@ export default app
 const test = async () => {
   console.log('pupeteer start')
   const browser = await puppeteer.launch({
-    headless: false
+    headless: true
   })
 
   const page = await browser.newPage()
@@ -32,11 +32,12 @@ const test = async () => {
 
   console.log('pupeteer page..')
 
+  page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')
   page
     .waitForSelector('.prod-price .total-price')
     .then(() => console.log('파싱완료'))
 
-  await page.goto('https://www.coupang.com/vp/products/4698347447?itemId=5914368660&vendorItemId=73212430319&q=%EC%A0%9C%EB%A1%9C%EC%BD%9C%EB%9D%BC&itemsCount=36&searchId=47c667b0197b4c0d83e82f790592add0&rank=10&isAddedCart=', {
+  await page.goto('https://www.coupang.com/vp/products/4698347447', {
     waitUntil: 'domcontentloaded'
   })
 
@@ -47,12 +48,11 @@ const test = async () => {
 
   const cSelector = await cheerio.load(pageContent)
   const priceEl = cSelector('.prod-price .total-price')
-  console.log(priceEl.text().trim())
+  console.log(priceEl.text().split('\n').join('').split(' ').join('').split('원').join('').split(',').join('').trim())
   // for (let i = 0; i < priceEl.length; i += 1) {
   //   console.log(priceEl[i])
   // }
 
-  await page.close()
   await browser.close()
   console.log('pupeteer close')
   // return title
