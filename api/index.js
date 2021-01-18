@@ -9,7 +9,7 @@ export default app
 
 app.get('/', async (req, res, next) => {
   const coupang = new Coupang()
-  const price = await coupang.parse()
+  const result = await coupang.parse()
 
-  res.send('hello ' + price)
+  res.send(result)
 })
