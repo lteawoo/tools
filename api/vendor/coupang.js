@@ -90,7 +90,7 @@ class Coupang {
 
     await browser.close()
 
-    return JSON.stringify(resultArr)
+    return resultArr
   }
 }
 

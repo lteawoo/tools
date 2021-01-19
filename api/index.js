@@ -11,5 +11,5 @@ app.get('/', async (req, res, next) => {
   const coupang = new Coupang()
   const result = await coupang.parse()
 
-  res.send(result)
+  res.json(result)
 })
