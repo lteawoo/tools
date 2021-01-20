@@ -1,11 +1,25 @@
 <template>
   <div>
-    <p
-      v-for="(item, i) in products"
-      :key="i"
-    >
-      {{ item.title }} {{ item.price }}
-    </p>
+    <v-list>
+      <template v-for="(item, i) in products">
+        <v-list-item
+          :key="i"
+          link
+          :href="item.link"
+          target="_blank"
+        >
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-subtitle>{{ item.price | numberComma }} {{ item.isFreeDelivery ? '/ 무료배송' : '' }}</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-divider
+          v-if="i < products.length - 1"
+          :key="i"
+        />
+      </template>
+    </v-list>
   </div>
 </template>
 
@@ -22,6 +36,12 @@ export default {
   data () {
     return {
       products: []
+    }
+  },
+
+  filters: {
+    numberComma (val) {
+      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     }
   },
 

@@ -47,6 +47,8 @@ class Coupang {
       상품제목
       상품링크
       가격
+      todo 무료배송 유무
+      todo 빠른배송(ex:로켓배송 등)
 
       '제로' 포함 안되어 있으면 스킵
     */
@@ -56,6 +58,7 @@ class Coupang {
 
       const product = cSelector(el)
 
+      // 제목
       const title = product.find('.descriptions-inner .name')
 
       if (!title.text().includes('제로')) {
@@ -63,15 +66,21 @@ class Coupang {
       }
       obj.title = title.text().trim()
 
+      // 링크
       const link = product.find('a.search-product-link')
       obj.link = this.url + link.attr('href')
 
+      // 가격
       const price = product.find('.descriptions-inner .price-area .price-value')
       obj.price = this.removeFormatToPrice(price.text())
 
+      // 무료배송 유무
+      const freeDelivery = product.find('.descriptions-inner .badges .badge-delivery')
+      obj.isFreeDelivery = !!freeDelivery.html()
+
       resultArr.push(obj)
 
-      if (resultArr.length >= 10) {
+      if (resultArr.length >= 5) {
         return false
       }
     })
