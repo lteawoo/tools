@@ -6,10 +6,15 @@ class Coupang {
     this.url = 'https://www.coupang.com'
   }
 
-  removeFormatToPrice (value) {
-    return value.trim().split(',').join('').split(' ').join('')
+  parseNumber (value) {
+    const reg = /\d+/g
+    const result = value.match(reg)
+    return result ? Number(result.join('')) : Number(result)
   }
 
+  /**
+   * 파싱
+   */
   async parse () {
     const browser = await puppeteer.launch({
       headless: true
@@ -41,49 +46,32 @@ class Coupang {
     })
     const pageContent = await page.content()
     const cSelector = await cheerio.load(pageContent)
-    const productList = await cSelector('#productList')
+    const productList = await cSelector('#productList').children()
 
-    /*
-      상품제목
-      상품링크
-      가격
-      todo 무료배송 유무
-      todo 빠른배송(ex:로켓배송 등)
-
-      '제로' 포함 안되어 있으면 스킵
-    */
     const resultArr = []
-    productList.children().each((i, el) => {
-      const obj = {}
 
-      const product = cSelector(el)
+    for (let i = 0; i < productList.length; i += 1) {
+      const product = await cSelector(productList[i])
 
-      // 제목
-      const title = product.find('.descriptions-inner .name')
-
+      // 제로콜라 선별
+      const title = await product.find('.descriptions-inner .name')
       if (!title.text().includes('제로')) {
-        return
+        continue
       }
-      obj.title = title.text().trim()
 
       // 링크
-      const link = product.find('a.search-product-link')
-      obj.link = this.url + link.attr('href')
+      const linkEl = product.find('a.search-product-link')
+      const link = this.url + linkEl.attr('href')
 
-      // 가격
-      const price = product.find('.descriptions-inner .price-area .price-value')
-      obj.price = this.removeFormatToPrice(price.text())
+      // 아이템 정보
+      const info = await this.parseProductInfo(browser, link)
+      info.link = link
 
-      // 무료배송 유무
-      const freeDelivery = product.find('.descriptions-inner .badges .badge-delivery')
-      obj.isFreeDelivery = !!freeDelivery.html()
-
-      resultArr.push(obj)
-
+      resultArr.push(info)
       if (resultArr.length >= 5) {
-        return false
+        break
       }
-    })
+    }
 
     resultArr.sort((a, b) => {
       if (a.price > b.price) {
@@ -100,6 +88,60 @@ class Coupang {
     await browser.close()
 
     return resultArr
+  }
+
+  /**
+   * 상품 페이지 파싱
+   * @param {*} browser
+   * @param {*} link
+   */
+  async parseProductInfo (browser, link) {
+    const page = await browser.newPage()
+    await page.setRequestInterception(true)
+
+    page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')
+    page.waitForSelector('#contents .prod-atf')
+
+    page.on('request', (req) => {
+      switch (req.resourceType()) {
+        case 'stylesheet':
+        case 'font':
+        case 'image':
+          req.abort()
+          break
+        default:
+          req.continue()
+          break
+      }
+    })
+
+    await page.goto(link, {
+      waitUntil: 'domcontentloaded'
+    })
+
+    const pageContent = await page.content()
+    const cSelector = await cheerio.load(pageContent)
+    const prodInfo = await cSelector('#contents .prod-atf')
+
+    // 상품명
+    const titleEl = await prodInfo.find('.prod-buy-header .prod-buy-header__title')
+    const title = titleEl.text()
+
+    // 가격
+    const priceEl = await prodInfo.find('.prod-price .total-price strong')
+    const price = this.parseNumber(priceEl.first().text())
+
+    // 배송비
+    const shippingFeeEl = await cSelector(prodInfo.find('.prod-shipping-fee .prod-shipping-fee-message').html())
+    const shippingFee = this.parseNumber(shippingFeeEl.text().trim())
+
+    await page.close()
+
+    return {
+      title,
+      price,
+      shippingFee
+    }
   }
 }
 

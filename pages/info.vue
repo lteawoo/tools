@@ -10,7 +10,7 @@
         >
           <v-list-item-content>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
-            <v-list-item-subtitle>{{ item.price | numberComma }} {{ item.isFreeDelivery ? '/ 무료배송' : '' }}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{ item.price | numberComma }}원 / 배송비: {{ item.shippingFee ? item.shippingFee + '원' : '무료' | numberComma }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 
@@ -20,13 +20,23 @@
         />
       </template>
     </v-list>
+
+    <v-btn @click="readList">list</v-btn>
+    <v-btn @click="readJson">json</v-btn>
   </div>
 </template>
 
 <script>
 export default {
+
+  filters: {
+    numberComma (val) {
+      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    }
+  },
+
   async asyncData ({ $axios }) {
-    const products = await $axios.get('/api')
+    const products = await $axios.get('/api/coupang')
 
     return {
       products: products.data
@@ -39,14 +49,20 @@ export default {
     }
   },
 
-  filters: {
-    numberComma (val) {
-      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-    }
-  },
-
   mounted () {
 
+  },
+
+  methods: {
+    async readList () {
+      const list = await this.$axios.get('/api/read-list')
+      console.log(list)
+    },
+
+    async readJson () {
+      const list = await this.$axios.get('/api/read-list')
+      console.log(list)
+    }
   }
 }
 </script>
