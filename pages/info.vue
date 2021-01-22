@@ -21,8 +21,7 @@
       </template>
     </v-list>
 
-    <v-btn @click="readList">list</v-btn>
-    <v-btn @click="readJson">json</v-btn>
+    <v-btn @click="parseCoupang">parseCoupang</v-btn>
   </div>
 </template>
 
@@ -54,13 +53,8 @@ export default {
   },
 
   methods: {
-    async readList () {
-      const list = await this.$axios.get('/api/read-list')
-      console.log(list)
-    },
-
-    async readJson () {
-      const list = await this.$axios.get('/api/read-list')
+    async parseCoupang () {
+      const list = await this.$axios.get('/api/parse/coupang')
       console.log(list)
     }
   }

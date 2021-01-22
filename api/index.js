@@ -8,38 +8,29 @@ const app = express()
 // Export express app
 export default app
 
-const baseDir = 'C:/file'
+const BASE_DIR = 'C:/file'
+const COUPANG_FILE = 'coupang.json'
 
 const saveJson = (productList) => {
-  fs.writeFile(`${baseDir}/data.json`, JSON.stringify(productList), (err) => {
+  fs.writeFile(`${BASE_DIR}/${COUPANG_FILE}`, JSON.stringify(productList), (err) => {
     if (err) {
       return err
     }
   })
 }
 
-app.get('/coupang', async (req, res, next) => {
+// parse route
+app.get('/parse/coupang', async (req, res, next) => {
   const coupang = new Coupang()
   const result = await coupang.parse()
-
   await saveJson(result)
-  res.json(result)
+
+  res.send()
 })
 
-app.get('/read', (req, res, next) => {
-  fs.readFile(`${baseDir}/data.json`, (err, data) => {
-    if (err) {
-      res.send(err)
-    } else {
-      res.send(data)
-    }
-  })
-})
-
-app.get('/read-list', (req, res, next) => {
-  fs.readdir(`${baseDir}`, {
-    withFileTypes: false
-  }, (err, data) => {
+// vendor route
+app.get('/coupang', (req, res, next) => {
+  fs.readFile(`${BASE_DIR}/${COUPANG_FILE}`, (err, data) => {
     if (err) {
       res.send(err)
     } else {
