@@ -42,7 +42,6 @@
             <v-list-item
               v-for="(child, j) in menu.children"
               :key="j"
-              :prepend-icon="child.icon"
               :to="child.link"
               :value="child.label"
               link
@@ -70,10 +69,17 @@ const menus = ref([
   { label: 'Home', icon: 'mdi-home', link: '/' },
   { label: 'About', icon: 'mdi-help', link: '/about' },
   {
-    label: 'Tools',
-    icon: 'mdi-toolbox',
+    label: '계산기',
+    icon: 'mdi-numeric',
     children: [
-      { label: 'A', icon: 'mdi-numeric', link: '/test' }
+      { label: '평수 / 면적 계산기', link: '/calc/area' }
+    ]
+  },
+  {
+    label: 'Tools',
+    icon: 'mdi-toolbox-outline',
+    children: [
+      { label: 'Error', link: '/test' }
     ]
   }
 ])
