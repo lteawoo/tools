@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row dense>
       <v-col>
-        hello
+        taeu.kr 입니다.
       </v-col>
     </v-row>
   </v-container>

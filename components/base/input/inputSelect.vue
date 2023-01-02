@@ -3,6 +3,7 @@
     v-model="localInput"
     variant="outlined"
     hide-details
+    :autofocus="props.autoFocus"
     @input="$emit('input', $event)"
   />
   <v-select
@@ -20,9 +21,11 @@
 const props = withDefaults(defineProps<{
   items?: Array<Object>,
   input: string,
-  select: string
+  select: string,
+  autoFocus?: boolean
 }>(), {
-  items: () => []
+  items: () => [],
+  autoFocus: false
 })
 
 const emit = defineEmits<{

@@ -64,23 +64,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const drawer = ref<boolean>(true)
+const drawer = ref<boolean>(false)
 const menus = ref([
   { label: 'Home', icon: 'mdi-home', link: '/' },
-  { label: 'About', icon: 'mdi-help', link: '/about' },
+  // { label: 'About', icon: 'mdi-help', link: '/about' },
   {
     label: '계산기',
     icon: 'mdi-numeric',
     children: [
       { label: '평수 / 면적 계산기', link: '/calc/area' }
     ]
-  },
-  {
-    label: 'Tools',
-    icon: 'mdi-toolbox-outline',
-    children: [
-      { label: 'Error', link: '/test' }
-    ]
   }
+  // {
+  //   label: 'Tools',
+  //   icon: 'mdi-toolbox-outline',
+  //   children: [
+  //     { label: 'Error', link: '/test' }
+  //   ]
+  // }
 ])
 </script>

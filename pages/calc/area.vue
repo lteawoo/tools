@@ -6,15 +6,16 @@
       </v-card-title>
       <v-card-text>
         <v-row>
-          <v-col cols="6">
+          <v-col sm="6" cols="12">
             <input-select
               v-model:input="input1"
               v-model:select="selected1"
               :items="selectItems1"
+              auto-focus
               @input="calcInput1"
             />
           </v-col>
-          <v-col cols="6">
+          <v-col sm="6" cols="12">
             <input-select
               v-model:input="input2"
               v-model:select="selected2"

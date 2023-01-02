@@ -1,6 +1,6 @@
 <template>
   <v-responsive>
-    <div class="d-flex flex-row justify-center bg-blue">
+    <div class="d-flex flex-row justify-center">
       <div class="main-container">
         <slot />
       </div>
