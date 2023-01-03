@@ -12,7 +12,7 @@
               v-model:select="selected1"
               :items="selectItems1"
               auto-focus
-              @input="calcInput1"
+              @input="input('left', $event)"
             />
           </v-col>
           <v-col sm="6" cols="12">
@@ -20,7 +20,7 @@
               v-model:input="input2"
               v-model:select="selected2"
               :items="selectItems2"
-              @input="calcInput2"
+              @input="input('right', $event)"
             />
           </v-col>
         </v-row>
@@ -31,6 +31,7 @@
 
 <script setup lang="ts">
 import InputSelect from '@/components/base/input/inputSelect.vue'
+import { UNIT } from '@/types/calc/area/unions/unit'
 
 const selectItems1 = [{
   label: '평',
@@ -46,16 +47,17 @@ const input2 = ref<string>('3.306')
 const selected1 = ref<string>('pyeong')
 const selected2 = ref<string>('squareMeter')
 
-onMounted(() => {
-})
-
-const calcInput1 = (e: InputEvent) => {
+const input = (side: string, e: InputEvent) => {
   const target = <HTMLInputElement> e.target
+  if (side === 'left') {
+    input2.value = calculate()
+  } else {
+    input1.value = calculate()
+  }
   input2.value = target.value ? String(Number(target.value) * 3.305785) : ''
 }
 
-const calcInput2 = (e: InputEvent) => {
-  const target = <HTMLInputElement> e.target
-  input1.value = target.value ? String(Number(target.value) / 3.305785) : ''
+const calculate = () => {
+  return '0'
 }
 </script>
