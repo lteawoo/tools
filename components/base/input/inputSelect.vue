@@ -18,6 +18,7 @@
 </template>
 
 <script setup lang="ts">
+
 const props = withDefaults(defineProps<{
   items?: Array<Object>,
   input: string,
