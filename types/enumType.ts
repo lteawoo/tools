@@ -4,7 +4,6 @@ export class EnumType {
   }
 
   static valueOf (p: string): EnumType {
-    console.log(p)
-    return p
+    return Object.values(this).find(e => e.value === p)
   }
 }
