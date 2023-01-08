@@ -8,6 +8,10 @@
   </v-container>
 </template>
 
-<script>
-
+<script setup>
+definePageMeta({
+  middleware: () => {
+    return '/calc/area'
+  }
+})
 </script>

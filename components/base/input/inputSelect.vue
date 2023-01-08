@@ -18,7 +18,6 @@
 </template>
 
 <script setup lang="ts">
-
 const props = withDefaults(defineProps<{
   items?: Array<Object>,
   input: string,
@@ -33,6 +32,7 @@ const emit = defineEmits<{
 (event: 'update:input', payload: string): void
 (event: 'update:select', payload: string): void
 (event: 'input', payload:InputEvent): void
+(event: 'select', payload:Event): void
 }>()
 
 const localInput = computed({

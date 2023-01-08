@@ -12,7 +12,7 @@
               v-model:select="selected1"
               :items="Unit.values"
               auto-focus
-              @input="input('left', $event)"
+              @input="input('left')"
             />
           </v-col>
           <v-col sm="6" cols="12">
@@ -20,8 +20,13 @@
               v-model:input="input2"
               v-model:select="selected2"
               :items="Unit.values"
-              @input="input('right', $event)"
+              @input="input('right')"
             />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <v-chip>공식</v-chip> {{ selected1Enum.desc }}
           </v-col>
         </v-row>
       </v-card-text>
@@ -38,9 +43,25 @@ const input1 = ref<string>('1')
 const input2 = ref<string>('3.305785')
 const selected1 = ref<string>(Unit.PYEONG.value)
 const selected2 = ref<string>(Unit.SQUARE_METER.value)
+const selected1Enum = computed(() => Unit.valueOf(selected1.value))
 
-const input = (side: string, e: InputEvent) => {
-  const target = <HTMLInputElement> e.target
+watch(selected1, (n, o) => {
+  if (n === selected2.value) {
+    selected1.value = selected2.value
+    selected2.value = o
+  }
+  input('left')
+})
+
+watch(selected2, (n, o) => {
+  if (n === selected1.value) {
+    selected2.value = selected1.value
+    selected1.value = o
+  }
+  input('left')
+})
+
+const input = (side: string) => {
   if (side === 'left') {
     input2.value = calculate(input1.value, Unit.valueOf(selected1.value), Unit.valueOf(selected2.value))
   } else {
@@ -48,18 +69,16 @@ const input = (side: string, e: InputEvent) => {
   }
 }
 
-const calculate = (value: string, source: EnumType, target: EnumType) : string => {
+const calculate = (value: string, source: EnumType, target: EnumType): string => {
   switch (source) {
-    case Unit.PYEONG: {
+    case Unit.PYEONG:
       if (target === Unit.SQUARE_METER) {
         return String(Math.round(Number(value) * 3.305785 * 1000000) / 1000000)
-      }
-    }; break
-    case Unit.SQUARE_METER: {
+      } break
+    case Unit.SQUARE_METER:
       if (target === Unit.PYEONG) {
         return String(Math.round(Number(value) / 3.305785 * 1000000) / 1000000)
-      }
-    }; break
+      } break
   }
   return '0'
 }

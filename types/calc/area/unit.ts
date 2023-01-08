@@ -1,15 +1,6 @@
 import { EnumType } from '@/types/enumType'
 
 export class Unit extends EnumType {
-  static readonly PYEONG = new Unit('평', 'pyeong')
-  static readonly SQUARE_METER = new Unit('제곱미터', 'squareMeter')
-
-  public readonly label: string
-  public readonly value: string
-
-  private constructor (label: string, value: string) {
-    super()
-    this.label = label
-    this.value = value
-  }
+  static readonly PYEONG = new Unit('평', 'pyeong', '평수에 3.305785을 곱합니다.')
+  static readonly SQUARE_METER = new Unit('제곱미터', 'squareMeter', '제곱미터에 3.305785을 나눕니다.')
 }

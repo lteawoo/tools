@@ -3,7 +3,11 @@
     <v-app-bar>
       <v-app-bar-nav-icon @click="drawer = !drawer" />
 
-      <v-app-bar-title>taeu.kr</v-app-bar-title>
+      <nuxt-link to="/" class="taeu-logo">
+        <v-app-bar-title>
+          taeu.kr
+        </v-app-bar-title>
+      </nuxt-link>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer">
@@ -66,7 +70,7 @@ import { ref } from 'vue'
 
 const drawer = ref<boolean>(false)
 const menus = ref([
-  { label: 'Home', icon: 'mdi-home', link: '/' },
+  // { label: 'Home', icon: 'mdi-home', link: '/' },
   // { label: 'About', icon: 'mdi-help', link: '/about' },
   {
     label: '계산기',
