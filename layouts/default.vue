@@ -68,6 +68,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+const route = useRoute()
+
+useHead({
+  titleTemplate: '%s - Taeu Tools',
+  meta: [{ property: 'og:title', content: `${route.meta.title} - Taeu Tools` }]
+})
+
 const drawer = ref<boolean>(false)
 const menus = ref([
   {

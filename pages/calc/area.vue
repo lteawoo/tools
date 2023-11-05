@@ -42,6 +42,17 @@ import InputSelect from '@/components/base/input/inputSelect.vue'
 import { AreaUnit } from '@/types/calc/area/areaUnit'
 import { EnumType } from '@/types/enumType'
 
+definePageMeta({
+  title: '평수 / 면적 계산기'
+})
+
+useHead({
+  title: '평수 / 면적 계산기',
+  meta: [{
+    property: 'og:description', content: '평수 계산기, 면적 계산기, 평수, 면적, 계산기, 평 제곱 계산기, 부동산 계산기'
+  }]
+})
+
 const input1 = ref<string>('1')
 const input2 = ref<string>('3.305785')
 const selected1 = ref<string>(AreaUnit.PYEONG.value)

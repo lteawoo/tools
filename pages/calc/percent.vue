@@ -42,6 +42,17 @@ import InputSelect from '@/components/base/input/inputSelect.vue'
 import { PercentUnit } from '@/types/calc/percentUnit'
 import { EnumType } from '@/types/enumType'
 
+definePageMeta({
+  title: '퍼센트 계산기'
+})
+
+useHead({
+  title: '퍼센트 계산기',
+  meta: [{
+    property: 'og:description', content: '퍼센트 계산기, 퍼센트 숫자 변환, 계산기'
+  }]
+})
+
 const input1 = ref<string>('10')
 const input2 = ref<string>('0.1')
 const selected1 = ref<string>(PercentUnit.PERCENT.value)
