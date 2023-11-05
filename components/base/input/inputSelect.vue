@@ -28,11 +28,10 @@ const props = withDefaults(defineProps<{
   autoFocus: false
 })
 
-const emit = defineEmits<{
-(event: 'update:input', payload: string): void
-(event: 'update:select', payload: string): void
-(event: 'input', payload:InputEvent): void
-(event: 'select', payload:Event): void
+const emit = defineEmits<{(event: 'update:input', payload: string): void
+  (event: 'update:select', payload: string): void
+  (event: 'input', payload: InputEvent): void
+  (event: 'select', payload: Event): void
 }>()
 
 const localInput = computed({
@@ -56,5 +55,4 @@ const localSelect = computed({
 })
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

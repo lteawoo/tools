@@ -1,8 +1,8 @@
 <template>
   <ads-layout>
-    <v-card elevation="1">
+    <v-card>
       <v-card-title>
-        <h1 class="my-5">평수 / 면적 계산기</h1>
+        <h1 class="my-5">퍼센트 계산기</h1>
       </v-card-title>
 
       <v-divider />
@@ -13,7 +13,7 @@
             <input-select
               v-model:input="input1"
               v-model:select="selected1"
-              :items="AreaUnit.values"
+              :items="PercentUnit.values"
               auto-focus
               @input="input('left')"
             />
@@ -22,7 +22,7 @@
             <input-select
               v-model:input="input2"
               v-model:select="selected2"
-              :items="AreaUnit.values"
+              :items="PercentUnit.values"
               @input="input('right')"
             />
           </v-col>
@@ -39,14 +39,14 @@
 
 <script setup lang="ts">
 import InputSelect from '@/components/base/input/inputSelect.vue'
-import { AreaUnit } from '@/types/calc/area/areaUnit'
+import { PercentUnit } from '@/types/calc/percentUnit'
 import { EnumType } from '@/types/enumType'
 
-const input1 = ref<string>('1')
-const input2 = ref<string>('3.305785')
-const selected1 = ref<string>(AreaUnit.PYEONG.value)
-const selected2 = ref<string>(AreaUnit.SQUARE_METER.value)
-const selected1Enum = computed(() => AreaUnit.valueOf(selected1.value))
+const input1 = ref<string>('10')
+const input2 = ref<string>('0.1')
+const selected1 = ref<string>(PercentUnit.PERCENT.value)
+const selected2 = ref<string>(PercentUnit.NUMBER.value)
+const selected1Enum = computed(() => PercentUnit.valueOf(selected1.value))
 
 watch(selected1, (n, o) => {
   if (n === selected2.value) {
@@ -66,21 +66,21 @@ watch(selected2, (n, o) => {
 
 const input = (side: string) => {
   if (side === 'left') {
-    input2.value = calculate(input1.value, AreaUnit.valueOf(selected1.value), AreaUnit.valueOf(selected2.value))
+    input2.value = calculate(input1.value, PercentUnit.valueOf(selected1.value), PercentUnit.valueOf(selected2.value))
   } else {
-    input1.value = calculate(input2.value, AreaUnit.valueOf(selected2.value), AreaUnit.valueOf(selected1.value))
+    input1.value = calculate(input2.value, PercentUnit.valueOf(selected2.value), PercentUnit.valueOf(selected1.value))
   }
 }
 
 const calculate = (value: string, source: EnumType, target: EnumType): string => {
   switch (source) {
-    case AreaUnit.PYEONG:
-      if (target === AreaUnit.SQUARE_METER) {
-        return String(Math.round(Number(value) * 3.305785 * 1000000) / 1000000)
+    case PercentUnit.PERCENT:
+      if (target === PercentUnit.NUMBER) {
+        return String(Math.round(Number(value) / 100 * 1000000) / 1000000)
       } break
-    case AreaUnit.SQUARE_METER:
-      if (target === AreaUnit.PYEONG) {
-        return String(Math.round(Number(value) / 3.305785 * 1000000) / 1000000)
+    case PercentUnit.NUMBER:
+      if (target === PercentUnit.PERCENT) {
+        return String(Math.round(Number(value) * 100 * 1000000) / 1000000)
       } break
   }
   return '0'

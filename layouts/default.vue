@@ -70,20 +70,19 @@ import { ref } from 'vue'
 
 const drawer = ref<boolean>(false)
 const menus = ref([
-  // { label: 'Home', icon: 'mdi-home', link: '/' },
-  // { label: 'About', icon: 'mdi-help', link: '/about' },
   {
     label: '계산기',
     icon: 'mdi-numeric',
     children: [
-      { label: '평수 / 면적 계산기', link: '/calc/area' }
+      { label: '평수 / 면적 계산기', link: '/calc/area' },
+      { label: '퍼센트 계산기', link: '/calc/percent' }
     ]
   }
   // {
-  //   label: 'Tools',
-  //   icon: 'mdi-toolbox-outline',
+  //   label: '금융',
+  //   icon: 'mdi-bank',
   //   children: [
-  //     { label: 'Error', link: '/test' }
+  //     { label: '대출이자 계산기', link: '/finance/loan' }
   //   ]
   // }
 ])
